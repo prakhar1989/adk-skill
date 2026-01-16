@@ -19,7 +19,7 @@ from google.adk.agents import LlmAgent, Agent  # Agent is an alias for LlmAgent
 
 agent = LlmAgent(
     name="my_agent",                    # Required: unique identifier
-    model="gemini-2.0-flash",           # Required: model string
+    model="gemini-3.0-flash-preview",           # Required: model string
     description="What this agent does", # For delegation decisions
     instruction="System prompt here",   # Behavior guidance
     tools=[tool1, tool2],               # Functions or Tool instances
@@ -42,9 +42,9 @@ class OutputSchema(BaseModel):
 agent = LlmAgent(
     # Identity
     name="advanced_agent",
-    model="gemini-2.0-flash",
+    model="gemini-3.0-flash-preview",
     description="Handles complex queries with structured output.",
-    
+
     # Behavior
     instruction="""You are a helpful assistant.
     Guidelines:
@@ -52,21 +52,21 @@ agent = LlmAgent(
     - Use tools when needed
     - Output in the required format
     """,
-    
+
     # Tools and sub-agents
     tools=[my_tool_function],
     sub_agents=[specialist_agent],
-    
+
     # State management
     output_key="agent_response",  # Saves final text to state
-    
+
     # Schema constraints
     input_schema=InputSchema,     # Expect JSON input matching schema
     output_schema=OutputSchema,   # Force JSON output matching schema
-    
+
     # Context control
     include_contents='default',   # 'default' or 'none' (stateless)
-    
+
     # LLM configuration
     generate_content_config=types.GenerateContentConfig(
         temperature=0.7,
@@ -94,12 +94,12 @@ agent = LlmAgent(
 
 ```python
 # Google AI Studio (requires GOOGLE_API_KEY)
-model="gemini-2.0-flash"
-model="gemini-2.5-flash"
-model="gemini-2.5-pro"
+model="gemini-3.0-flash-preview"
+model="gemini-3.0-pro"
+model="gemini-3.0-flash-preview"
 
 # Vertex AI (requires GOOGLE_CLOUD_PROJECT)
-model="gemini-2.0-flash"  # Same string, different auth
+model="gemini-3.0-flash-preview"  # Same string, different auth
 
 # Via LiteLLM (for other providers)
 from google.adk.models import LiteLlm
@@ -171,7 +171,7 @@ from typing import AsyncGenerator
 
 class TerminationChecker(BaseAgent):
     """Custom agent that checks state and escalates to exit loop."""
-    
+
     async def _run_async_impl(self, ctx) -> AsyncGenerator[Event, None]:
         quality = ctx.session.state.get("quality_score", 0)
         should_stop = quality >= 8  # Exit when quality is good enough
@@ -216,20 +216,20 @@ from typing import AsyncGenerator
 
 class DataTransformer(BaseAgent):
     """Custom agent that transforms data without using an LLM."""
-    
+
     async def _run_async_impl(
-        self, 
+        self,
         ctx: InvocationContext
     ) -> AsyncGenerator[Event, None]:
         # Read from state
         raw_data = ctx.session.state.get("raw_data", {})
-        
+
         # Process (no LLM needed)
         transformed = self._transform(raw_data)
-        
+
         # Write to state
         ctx.session.state["transformed_data"] = transformed
-        
+
         # Yield response event
         yield Event(
             author=self.name,
@@ -237,7 +237,7 @@ class DataTransformer(BaseAgent):
                 parts=[types.Part(text=f"Transformed {len(raw_data)} records.")]
             ),
         )
-    
+
     def _transform(self, data: dict) -> dict:
         # Your transformation logic
         return {k: v.upper() if isinstance(v, str) else v for k, v in data.items()}
@@ -251,10 +251,10 @@ transformer = DataTransformer(name="transformer", description="Transforms raw da
 ```python
 class ConditionalRouter(BaseAgent):
     """Routes based on state, can escalate to parent."""
-    
+
     async def _run_async_impl(self, ctx) -> AsyncGenerator[Event, None]:
         task_type = ctx.session.state.get("task_type", "unknown")
-        
+
         if task_type == "urgent":
             # Escalate to parent agent
             yield Event(
@@ -284,7 +284,7 @@ Apply instructions to all agents in a hierarchy:
 ```python
 root_agent = LlmAgent(
     name="root",
-    model="gemini-2.0-flash",
+    model="gemini-3.0-flash-preview",
     global_instruction="Always be polite and professional.",  # Applies to all sub-agents
     instruction="You coordinate specialized agents.",
     sub_agents=[agent_a, agent_b],
@@ -298,7 +298,7 @@ Control how agents can delegate:
 ```python
 specialist = LlmAgent(
     name="specialist",
-    model="gemini-2.0-flash",
+    model="gemini-3.0-flash-preview",
     disallow_transfer_to_parent=True,   # Can't escalate up
     disallow_transfer_to_peers=True,    # Can't transfer to siblings
 )
@@ -328,7 +328,7 @@ agent = LlmAgent(
 # Or use Plan-ReAct pattern
 agent = LlmAgent(
     name="planner",
-    model="gemini-2.0-flash",
+    model="gemini-3.0-flash-preview",
     planner=PlanReActPlanner(),
     tools=[...],
 )
@@ -343,7 +343,7 @@ from google.adk.code_executors import BuiltInCodeExecutor
 
 calculator = LlmAgent(
     name="calculator",
-    model="gemini-2.0-flash",
+    model="gemini-3.0-flash-preview",
     code_executor=BuiltInCodeExecutor(),
     instruction="Write Python code to solve math problems.",
 )

@@ -46,7 +46,7 @@ def get_weather(city: str) -> dict:
 
 root_agent = Agent(
     name="weather_agent",
-    model="gemini-2.0-flash",
+    model="gemini-3.0-flash-preview",
     description="Provides weather information.",
     instruction="You help users get weather. Use the get_weather tool when asked.",
     tools=[get_weather],
@@ -58,14 +58,14 @@ root_agent = Agent(
 ```python
 from google.adk.agents import LlmAgent
 
-billing = LlmAgent(name="billing", model="gemini-2.0-flash", 
+billing = LlmAgent(name="billing", model="gemini-3.0-flash-preview", 
                    description="Handles billing and payment questions.")
-support = LlmAgent(name="support", model="gemini-2.0-flash",
+support = LlmAgent(name="support", model="gemini-3.0-flash-preview",
                    description="Handles technical support.")
 
 root_agent = LlmAgent(
     name="coordinator",
-    model="gemini-2.0-flash",
+    model="gemini-3.0-flash-preview",
     instruction="Route billing questions to billing agent, technical issues to support.",
     sub_agents=[billing, support],
 )
@@ -125,7 +125,7 @@ root_agent = LoopAgent(
 | Parameter | Required | Purpose |
 |-----------|----------|---------|
 | `name` | Yes | Unique identifier (avoid "user") |
-| `model` | Yes | LLM model string (e.g., "gemini-2.0-flash") |
+| `model` | Yes | LLM model string (e.g., "gemini-3.0-flash-preview") |
 | `instruction` | No | System prompt guiding behavior |
 | `description` | No | Used by parent agents for delegation decisions |
 | `tools` | No | List of functions or Tool instances |

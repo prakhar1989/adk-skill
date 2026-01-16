@@ -35,7 +35,7 @@ def get_stock_price(ticker: str) -> dict:
 
 agent = Agent(
     name="stock_agent",
-    model="gemini-2.0-flash",
+    model="gemini-3.0-flash-preview",
     instruction="Help users check stock prices using the get_stock_price tool.",
     tools=[get_stock_price],  # ADK wraps this automatically
 )
@@ -102,7 +102,7 @@ async def fetch_weather(city: str) -> dict:
 # Async functions work the same way
 agent = Agent(
     name="weather_agent",
-    model="gemini-2.0-flash",
+    model="gemini-3.0-flash-preview",
     tools=[fetch_weather],
 )
 ```
@@ -129,7 +129,7 @@ calc_tool = FunctionTool(
 
 agent = Agent(
     name="calculator",
-    model="gemini-2.0-flash",
+    model="gemini-3.0-flash-preview",
     tools=[calc_tool],
 )
 ```
@@ -147,7 +147,7 @@ from google.adk.tools import google_search
 
 agent = Agent(
     name="search_agent",
-    model="gemini-2.0-flash",
+    model="gemini-3.0-flash-preview",
     instruction="Search the web to answer questions.",
     tools=[google_search],
 )
@@ -161,7 +161,7 @@ from google.adk.code_executors import BuiltInCodeExecutor
 # Enabled via code_executor parameter, not tools
 agent = Agent(
     name="coder",
-    model="gemini-2.0-flash",
+    model="gemini-3.0-flash-preview",
     code_executor=BuiltInCodeExecutor(),
     instruction="Write and execute Python code to solve problems.",
 )
@@ -178,7 +178,7 @@ rag_tool = VertexAiSearchTool(
 
 agent = Agent(
     name="rag_agent",
-    model="gemini-2.0-flash",
+    model="gemini-3.0-flash-preview",
     tools=[rag_tool],
 )
 ```
@@ -198,7 +198,7 @@ from google.adk.tools import agent_tool
 # Specialist agent
 researcher = LlmAgent(
     name="researcher",
-    model="gemini-2.0-flash",
+    model="gemini-3.0-flash-preview",
     description="Researches topics and provides detailed summaries.",
     instruction="Research the given topic thoroughly.",
 )
@@ -209,7 +209,7 @@ research_tool = agent_tool.AgentTool(agent=researcher)
 # Parent agent uses it as a tool
 writer = LlmAgent(
     name="writer",
-    model="gemini-2.0-flash",
+    model="gemini-3.0-flash-preview",
     instruction="Write articles. Use the researcher tool to gather information first.",
     tools=[research_tool],
 )
@@ -248,7 +248,7 @@ summarizer = LlmAgent(name="summarizer", instruction="Summarize text concisely."
 # Mid-level agent combining tools
 researcher = LlmAgent(
     name="researcher",
-    model="gemini-2.0-flash",
+    model="gemini-3.0-flash-preview",
     tools=[
         agent_tool.AgentTool(agent=web_search),
         agent_tool.AgentTool(agent=summarizer),
@@ -258,7 +258,7 @@ researcher = LlmAgent(
 # Top-level agent
 report_writer = LlmAgent(
     name="report_writer",
-    model="gemini-2.0-flash",
+    model="gemini-3.0-flash-preview",
     instruction="Write reports. Use the researcher tool to gather and summarize info.",
     tools=[agent_tool.AgentTool(agent=researcher)],
 )
@@ -286,7 +286,7 @@ github_tools = MCPToolset(
 
 agent = LlmAgent(
     name="github_agent",
-    model="gemini-2.0-flash",
+    model="gemini-3.0-flash-preview",
     tools=[github_tools],
 )
 ```
@@ -313,7 +313,7 @@ local_tools = MCPToolset(
 
 agent = LlmAgent(
     name="local_agent",
-    model="gemini-2.0-flash",
+    model="gemini-3.0-flash-preview",
     tools=[local_tools],
 )
 ```
@@ -341,7 +341,7 @@ api_tools = OpenAPIToolset.from_file(
 
 agent = LlmAgent(
     name="api_agent",
-    model="gemini-2.0-flash",
+    model="gemini-3.0-flash-preview",
     tools=[api_tools],
 )
 ```
@@ -401,7 +401,7 @@ def get_user_context(tool_context: ToolContext) -> dict:
 
 agent = Agent(
     name="preference_agent",
-    model="gemini-2.0-flash",
+    model="gemini-3.0-flash-preview",
     tools=[save_preference, get_user_context],
 )
 ```

@@ -22,21 +22,21 @@ from google.adk.agents import LlmAgent
 # Specialist agents with clear descriptions
 billing_agent = LlmAgent(
     name="billing",
-    model="gemini-2.0-flash",
+    model="gemini-3.0-flash-preview",
     description="Handles billing, payments, invoices, and subscription questions.",
     instruction="Help users with billing inquiries. Be precise about amounts and dates.",
 )
 
 technical_agent = LlmAgent(
     name="technical",
-    model="gemini-2.0-flash",
+    model="gemini-3.0-flash-preview",
     description="Handles technical support, bugs, errors, and how-to questions.",
     instruction="Help users solve technical problems. Ask for error messages and logs.",
 )
 
 sales_agent = LlmAgent(
     name="sales",
-    model="gemini-2.0-flash",
+    model="gemini-3.0-flash-preview",
     description="Handles pricing, demos, enterprise plans, and purchasing questions.",
     instruction="Help users understand our products and pricing. Be helpful but not pushy.",
 )
@@ -44,7 +44,7 @@ sales_agent = LlmAgent(
 # Coordinator routes based on descriptions
 root_agent = LlmAgent(
     name="help_desk",
-    model="gemini-2.0-flash",
+    model="gemini-3.0-flash-preview",
     instruction="""You are the help desk coordinator.
     
     Analyze each request and route to the appropriate specialist:
@@ -70,7 +70,7 @@ from google.adk.agents import SequentialAgent, LlmAgent
 # Stage 1: Extract
 extractor = LlmAgent(
     name="extractor",
-    model="gemini-2.0-flash",
+    model="gemini-3.0-flash-preview",
     instruction="""Extract key information from the input document.
     Output as JSON with keys: title, author, date, main_points, entities.
     """,
@@ -80,7 +80,7 @@ extractor = LlmAgent(
 # Stage 2: Analyze
 analyzer = LlmAgent(
     name="analyzer",
-    model="gemini-2.0-flash",
+    model="gemini-3.0-flash-preview",
     instruction="""Analyze the extracted data in {extracted_data}.
     Identify:
     - Sentiment (positive/negative/neutral)
@@ -94,7 +94,7 @@ analyzer = LlmAgent(
 # Stage 3: Summarize
 summarizer = LlmAgent(
     name="summarizer",
-    model="gemini-2.0-flash",
+    model="gemini-3.0-flash-preview",
     instruction="""Create a concise summary based on:
     - Extracted data: {extracted_data}
     - Analysis: {analysis}
@@ -107,7 +107,7 @@ summarizer = LlmAgent(
 # Stage 4: Format
 formatter = LlmAgent(
     name="formatter",
-    model="gemini-2.0-flash",
+    model="gemini-3.0-flash-preview",
     instruction="""Format the summary in {summary} as a professional report.
     Include sections: Overview, Key Findings, Recommendations.
     """,
@@ -131,21 +131,21 @@ from google.adk.agents import ParallelAgent, SequentialAgent, LlmAgent
 # Parallel research agents
 market_researcher = LlmAgent(
     name="market_research",
-    model="gemini-2.0-flash",
+    model="gemini-3.0-flash-preview",
     instruction="Research market trends and competitive landscape for {topic}.",
     output_key="market_data",
 )
 
 technical_researcher = LlmAgent(
     name="tech_research",
-    model="gemini-2.0-flash",
+    model="gemini-3.0-flash-preview",
     instruction="Research technical aspects and feasibility for {topic}.",
     output_key="tech_data",
 )
 
 financial_researcher = LlmAgent(
     name="financial_research",
-    model="gemini-2.0-flash",
+    model="gemini-3.0-flash-preview",
     instruction="Research financial implications and ROI for {topic}.",
     output_key="financial_data",
 )
@@ -159,7 +159,7 @@ research_phase = ParallelAgent(
 # Gather: synthesize results
 synthesizer = LlmAgent(
     name="synthesizer",
-    model="gemini-2.0-flash",
+    model="gemini-3.0-flash-preview",
     instruction="""Synthesize the research findings:
     - Market: {market_data}
     - Technical: {tech_data}
@@ -188,21 +188,21 @@ from google.adk.tools import agent_tool
 # Leaf-level specialists
 code_writer = LlmAgent(
     name="code_writer",
-    model="gemini-2.0-flash",
+    model="gemini-3.0-flash-preview",
     description="Writes code implementations.",
     instruction="Write clean, documented code for the given requirements.",
 )
 
 code_reviewer = LlmAgent(
     name="code_reviewer",
-    model="gemini-2.0-flash",
+    model="gemini-3.0-flash-preview",
     description="Reviews code for bugs and improvements.",
     instruction="Review code for bugs, security issues, and style. Suggest improvements.",
 )
 
 test_writer = LlmAgent(
     name="test_writer",
-    model="gemini-2.0-flash",
+    model="gemini-3.0-flash-preview",
     description="Writes unit tests.",
     instruction="Write comprehensive unit tests with good coverage.",
 )
@@ -210,7 +210,7 @@ test_writer = LlmAgent(
 # Mid-level: Development lead uses specialists as tools
 dev_lead = LlmAgent(
     name="dev_lead",
-    model="gemini-2.0-flash",
+    model="gemini-3.0-flash-preview",
     description="Manages code development tasks.",
     instruction="""Coordinate code development:
     1. Use code_writer to implement features
@@ -231,7 +231,7 @@ doc_reviewer = LlmAgent(name="doc_reviewer", description="Reviews documentation.
 
 doc_lead = LlmAgent(
     name="doc_lead",
-    model="gemini-2.0-flash",
+    model="gemini-3.0-flash-preview",
     description="Manages documentation tasks.",
     tools=[
         agent_tool.AgentTool(agent=doc_writer),
@@ -242,7 +242,7 @@ doc_lead = LlmAgent(
 # Top-level: Project manager
 root_agent = LlmAgent(
     name="project_manager",
-    model="gemini-2.0-flash",
+    model="gemini-3.0-flash-preview",
     instruction="""Manage the project:
     - Use dev_lead for code-related tasks
     - Use doc_lead for documentation tasks
@@ -266,7 +266,7 @@ from google.adk.agents import SequentialAgent, LlmAgent
 
 generator = LlmAgent(
     name="generator",
-    model="gemini-2.0-flash",
+    model="gemini-3.0-flash-preview",
     instruction="""Generate a response to the user's request.
     Be creative and thorough.
     """,
@@ -275,7 +275,7 @@ generator = LlmAgent(
 
 critic = LlmAgent(
     name="critic",
-    model="gemini-2.0-flash",
+    model="gemini-3.0-flash-preview",
     instruction="""Review the draft in {draft}.
     
     Evaluate:
@@ -291,7 +291,7 @@ critic = LlmAgent(
 
 refiner = LlmAgent(
     name="refiner",
-    model="gemini-2.0-flash",
+    model="gemini-3.0-flash-preview",
     instruction="""Improve the draft based on the critique.
     
     Original draft: {draft}
@@ -341,7 +341,7 @@ class QualityGate(BaseAgent):
 # Initial draft generator (runs once before loop)
 initial_drafter = LlmAgent(
     name="initial_draft",
-    model="gemini-2.0-flash",
+    model="gemini-3.0-flash-preview",
     instruction="Create an initial draft for the user's request.",
     output_key="current_draft",
 )
@@ -349,7 +349,7 @@ initial_drafter = LlmAgent(
 # Improvement agent (runs each iteration)
 improver = LlmAgent(
     name="improver",
-    model="gemini-2.0-flash",
+    model="gemini-3.0-flash-preview",
     instruction="""Improve the draft in {current_draft}.
     Previous feedback: {feedback}
     Make it better while keeping what works.
@@ -360,7 +360,7 @@ improver = LlmAgent(
 # Quality evaluator
 evaluator = LlmAgent(
     name="evaluator",
-    model="gemini-2.0-flash",
+    model="gemini-3.0-flash-preview",
     instruction="""Evaluate {current_draft} on a scale of 1-10.
     Provide specific feedback for improvement.
     Output format:
@@ -373,7 +373,7 @@ evaluator = LlmAgent(
 # Score extractor (parses the score from feedback)
 score_extractor = LlmAgent(
     name="score_extractor",
-    model="gemini-2.0-flash",
+    model="gemini-3.0-flash-preview",
     instruction="""Extract just the numeric score from: {feedback}
     Output only the number, nothing else.
     """,
@@ -436,7 +436,7 @@ approval_tool = FunctionTool(func=request_human_approval)
 # Agent that prepares actions for approval
 preparer = LlmAgent(
     name="preparer",
-    model="gemini-2.0-flash",
+    model="gemini-3.0-flash-preview",
     instruction="""Analyze the request and prepare an action plan.
     Output:
     - Proposed action
@@ -449,7 +449,7 @@ preparer = LlmAgent(
 # Agent that requests approval
 approver = LlmAgent(
     name="approval_requester",
-    model="gemini-2.0-flash",
+    model="gemini-3.0-flash-preview",
     instruction="""Based on {action_plan}, request human approval.
     Use the request_human_approval tool with appropriate details.
     """,
@@ -460,7 +460,7 @@ approver = LlmAgent(
 # Agent that executes approved actions
 executor = LlmAgent(
     name="executor",
-    model="gemini-2.0-flash",
+    model="gemini-3.0-flash-preview",
     instruction="""Check approval in {approval_result}.
     If approved: Execute the action from {action_plan}.
     If rejected: Explain why the action was not taken.
@@ -491,7 +491,7 @@ from google.genai import types
 # Define agent
 agent = LlmAgent(
     name="assistant",
-    model="gemini-2.0-flash",
+    model="gemini-3.0-flash-preview",
     instruction="You are a helpful assistant.",
 )
 
