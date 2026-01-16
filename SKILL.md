@@ -58,7 +58,7 @@ root_agent = Agent(
 ```python
 from google.adk.agents import LlmAgent
 
-billing = LlmAgent(name="billing", model="gemini-3.0-flash-preview", 
+billing = LlmAgent(name="billing", model="gemini-3.0-flash-preview",
                    description="Handles billing and payment questions.")
 support = LlmAgent(name="support", model="gemini-3.0-flash-preview",
                    description="Handles technical support.")
@@ -151,11 +151,11 @@ Tool functions must have:
 ```python
 def search_database(query: str, limit: int = 10) -> dict:
     """Search the database for matching records.
-    
+
     Args:
         query: The search query string.
         limit: Maximum results to return (default 10).
-    
+
     Returns:
         dict with 'status' and 'results' keys.
     """
@@ -163,6 +163,8 @@ def search_database(query: str, limit: int = 10) -> dict:
 ```
 
 ## Running Agents
+
+### Via CLI (Development)
 
 ```bash
 # Install
@@ -178,12 +180,44 @@ adk run my_agent
 adk web --port 8000
 
 # Run API server
-adk api_server my_agent
+adk api_server my_agent --port 8080
 ```
 
-## References
+### Programmatically (Production)
+
+For APIs, UIs, or custom integrations, use Runner and Session directly:
+
+```python
+from google.adk.agents import Agent
+from google.adk.runners import Runner
+from google.adk.sessions import InMemorySessionService
+from google.genai import types
+
+# Setup
+agent = Agent(name="assistant", model="gemini-3.0-flash-preview", instruction="Be helpful.")
+session_service = InMemorySessionService()
+runner = Runner(agent=agent, app_name="my_app", session_service=session_service)
+
+# Create session
+await session_service.create_session(
+    app_name="my_app", user_id="user_123", session_id="session_456"
+)
+
+# Run agent
+message = types.Content(role="user", parts=[types.Part(text="Hello!")])
+async for event in runner.run_async(
+    user_id="user_123", session_id="session_456", new_message=message
+):
+    if event.is_final_response():
+        print(event.content.parts[0].text)
+```
+
+See **[runtime.md](examples/runtime.md)** for complete API/UI integration examples.
+
+## examples
 
 For detailed patterns and examples:
-- **[agents.md](references/agents.md)**: LlmAgent, workflow agents, custom agents
-- **[tools.md](references/tools.md)**: Function tools, MCP tools, OpenAPI tools, AgentTool
-- **[patterns.md](references/patterns.md)**: Multi-agent design patterns
+- **[agents.md](examples/agents.md)**: LlmAgent, workflow agents, custom agents
+- **[tools.md](examples/tools.md)**: Function tools, MCP tools, OpenAPI tools, AgentTool
+- **[patterns.md](examples/patterns.md)**: Multi-agent design patterns
+- **[runtime.md](examples/runtime.md)**: Runner, Session, Events, and building APIs/UIs
